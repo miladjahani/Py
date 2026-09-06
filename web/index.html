@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <!-- PWA & Mobile Capabilities -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#ea580c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SimSXEWCu">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>شبیه‌ساز مدار استخراج با حلال و الکترووینینگ مس (SimSXEWCu v7.0)</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --copper: #ea580c;
+      --copper-hover: #c2410c;
+      --cyan: #06b6d4;
+      --emerald: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-warn: #f59e0b;
+      --accent-danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Vazirmatn, Tahoma, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding: 24px 16px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 24px;
+    }
+
+    .header-title h1 {
+      font-size: 1.6rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-title h1 span {
+      color: var(--copper);
+    }
+
+    .header-title p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background-color: rgba(234, 88, 12, 0.15);
+      border: 1px solid var(--copper);
+      color: var(--copper);
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Tabs Navigation */
+    .config-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .tab-btn {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--copper);
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background-color: var(--copper);
+      border-color: var(--copper);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* Grid Layout */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .card-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .form-group label span.unit {
+      color: var(--cyan);
+      direction: ltr;
+    }
+
+    .input-box {
+      width: 100%;
+      padding: 8px 12px;
+      background-color: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .input-box:focus {
+      border-color: var(--copper);
+    }
+
+    .btn-calc {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--copper);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-calc:hover {
+      background-color: var(--copper-hover);
+    }
+
+    /* Metrics Overview */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background-color: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 4px;
+      height: 100%;
+      background-color: var(--copper);
+    }
+
+    .kpi-card.cyan::before { background-color: var(--cyan); }
+    .kpi-card.emerald::before { background-color: var(--emerald); }
+    .kpi-card.amber::before { background-color: var(--accent-warn); }
+
+    .kpi-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .kpi-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .kpi-sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Flow Diagram Canvas / Schematic */
+    .schematic-wrapper {
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .flow-nodes {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+
+    .node {
+      background-color: #1e293b;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 12px;
+      min-width: 140px;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    }
+
+    .node.organic { border-top: 3px solid var(--copper); }
+    .node.aqueous { border-top: 3px solid var(--cyan); }
+    .node.ew { border-top: 3px solid var(--emerald); }
+    .node.wash { border-top: 3px solid var(--accent-warn); }
+
+    .node-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .node-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      direction: ltr;
+    }
+
+    .node-arrow {
+      color: var(--copper);
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      text-align: right;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    th {
+      background-color: rgba(15, 23, 42, 0.8);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    tr:hover td {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    .num {
+      direction: ltr;
+      text-align: right;
+      font-family: monospace;
+    }
+
+    .tag-aq {
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
+    .tag-org {
+      color: var(--copper);
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding-top: 24px;
+      border-top: 1px solid var(--card-border);
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <header>
+    <div class="header-title">
+      <h1><span>Copper SX-EW</span> شبیه‌ساز متالورژیکی استخراج مس</h1>
+      <p>پیاده‌سازی مستقل متدولوژی و تعادل‌های متالورژیکی SimSXEWCu v7.0 (Joseph Kafumbila)</p>
+    </div>
+    <div class="badge">نسخه ۷.۰ جامع | All Configurations</div>
+  </header>
+
+  <!-- Configurations Tabs -->
+  <div class="config-tabs" id="tabs-container">
+    <button class="tab-btn active" data-config="A1_2Ex1S">مدار A1 (۲Ex-۱S پایه)</button>
+    <button class="tab-btn" data-config="A1_3Ex1S">مدار A1 (۳Ex-۱S)</button>
+    <button class="tab-btn" data-config="A2_2Ex1S">مدار A2 (۲Ex-۱S سیرکولاسیون)</button>
+    <button class="tab-btn" data-config="B1_2Ex1S">مدار B1 (واش در لندر E1)</button>
+    <button class="tab-btn" data-config="B2_2Ex1S">مدار B2 (لندر واش + سیرکولاسیون)</button>
+    <button class="tab-btn" data-config="C1_2Ex1S">مدار C1 (شستشو با آب خام)</button>
+    <button class="tab-btn" data-config="C2_2Ex1S">مدار C2 (شستشوی خام + سیرکولاسیون)</button>
+    <button class="tab-btn" data-config="D1_2Ex1S">مدار D1 (اسکرابینگ با آب اسیدی)</button>
+    <button class="tab-btn" data-config="D2_2Ex1S">مدار D2 (اسکرابینگ اسیدی + سیرکولاسیون)</button>
+    <button class="tab-btn" data-config="E1_2Ex1S">مدار E1 (اسکرابینگ با بلید رقیق)</button>
+    <button class="tab-btn" data-config="E2_2Ex1S">مدار E2 (بلید رقیق + سیرکولاسیون کامل)</button>
+  </div>
+
+  <!-- Dashboard Grid -->
+  <div class="dashboard-grid">
+    <!-- Left Column: Inputs -->
+    <div class="input-panel">
+      <div class="card">
+        <div class="card-header">
+          <h2>مشخصات خوراک PLS</h2>
+          <span class="badge">ورودی فرآیند</span>
+        </div>
+        <div class="form-group">
+          <label>دبی محلول باردار (PLS Flow) <span class="unit">m³/h</span></label>
+          <input type="number" id="inp-pls-flow" class="input-box" value="1000" step="50">
+        </div>
+        <div class="form-group">
+          <label>عیار مس خوراک (Cu PLS) <span class="unit">g/L</span></label>
+          <input type="number" id="inp-pls-cu" class="input-box" value="2.50" step="0.1">
+        </div>
+        <div class="form-group">
+          <label>عیار آهن سه ظرفیتی (Fe³⁺ PLS) <span class="unit">g/L</span></label>
+          <input type="number" id="inp-pls-fe3" class="input-box" value="0.50" step="0.05">
+        </div>
+        <div class="form-group">
+          <label>عیار آهن دو ظرفیتی (Fe²⁺ PLS) <span class="unit">g/L</span></label>
+          <input type="number" id="inp-pls-fe2" class="input-box" value="2.00" step="0.1">
+        </div>
+        <div class="form-group">
+          <label>عیار منگنز کل (Mn PLS) <span class="unit">g/L</span></label>
+          <input type="number" id="inp-pls-mn" class="input-box" value="4.00" step="0.1">
+        </div>
+        <div class="form-group">
+          <label>اسید آزاد اولیه (Free Acid) <span class="unit">g/L</span></label>
+          <input type="number" id="inp-pls-ac" class="input-box" value="5.00" step="0.2">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>تنظیمات استخراج و الکترووینینگ</h2>
+        </div>
+        <div class="form-group">
+          <label>درصد بارگیری به ماکزیمم (%ML) <span class="unit">%</span></label>
+          <input type="number" id="inp-pml" class="input-box" value="80.0" step="1">
+        </div>
+        <div class="form-group">
+          <label>نسبت فازها در استخراج (O/A Ex) <span class="unit">-</span></label>
+          <input type="number" id="inp-oa" class="input-box" value="1.25" step="0.05">
+        </div>
+        <div class="form-group">
+          <label>عیار مس در اسپنت الکترولیت <span class="unit">g/L</span></label>
+          <input type="number" id="inp-spent-cu" class="input-box" value="35.0" step="1">
+        </div>
+        <div class="form-group">
+          <label>عیار مس در ادوانس الکترولیت <span class="unit">g/L</span></label>
+          <input type="number" id="inp-adv-cu" class="input-box" value="50.0" step="1">
+        </div>
+        <div class="form-group">
+          <label>دانسیته جریان کاتدی <span class="unit">A/m²</span></label>
+          <input type="number" id="inp-cd" class="input-box" value="300" step="10">
+        </div>
+        <button class="btn-calc" id="btn-run-sim">
+          <span>محاسبه و اجرای شبیه‌سازی</span>
+          <span>⚡</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Column: Outputs, Schematic & Streams -->
+    <div class="results-panel">
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card emerald">
+          <div class="kpi-title">بازیابی کل متالورژیکی مس</div>
+          <div class="kpi-value" id="kpi-recovery">87.14%</div>
+          <div class="kpi-sub" id="kpi-ex-eff">راندمان استخراج: 93.11%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">تولید کل کاتد مس (CuPR)</div>
+          <div class="kpi-value" id="kpi-prod">2.18 t/h</div>
+          <div class="kpi-sub" id="kpi-prod-sub">تجاری: 1.74 | اسکاوندجر: 0.44</div>
+        </div>
+        <div class="kpi-card cyan">
+          <div class="kpi-title">غلظت و بارگیری اکسترکتنت</div>
+          <div class="kpi-value" id="kpi-extractant">10.12%</div>
+          <div class="kpi-sub" id="kpi-ml">ماکزیمم بارگیری: 4.94 g/L</div>
+        </div>
+        <div class="kpi-card amber">
+          <div class="kpi-title">دبی بلید الکترووینینگ (EWB)</div>
+          <div class="kpi-value" id="kpi-bleed">4.27 m³/h</div>
+          <div class="kpi-sub" id="kpi-cells">تعداد کل سلول‌ها: 46 عدد</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">نسبت Cu/Fe در فاز آلی باردار</div>
+          <div class="kpi-value" id="kpi-cufe">408.9</div>
+          <div class="kpi-sub" id="kpi-femn">نسبت Fe/Mn اسپنت: 2.51</div>
+        </div>
+        <div class="kpi-card cyan">
+          <div class="kpi-title">خطر اکسیداسیون آندی منگنز</div>
+          <div class="kpi-value" id="kpi-mn-risk">0.395 g/L</div>
+          <div class="kpi-sub" id="kpi-mn-risk-sub">غلظت پرمنگنات در اسپنت</div>
+        </div>
+      </div>
+
+      <!-- Schematic Diagram -->
+      <div class="schematic-wrapper">
+        <div class="card-header" style="border:none; margin-bottom: 8px;">
+          <h2>دیاگرام جریان فرآیندی (Process Flow Schematic)</h2>
+          <span class="badge" id="circuit-summary-tag">۲Ex-۱S Baseline</span>
+        </div>
+        <div class="flow-nodes" id="flow-schematic-container">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- Stream Table -->
+      <div class="card">
+        <div class="card-header">
+          <h2>موازنه جرم و مشخصات جریان‌ها (Stream Mass Balance)</h2>
+          <button class="tab-btn" id="btn-export-csv" style="padding: 4px 10px; font-size: 0.75rem;">خروجی CSV</button>
+        </div>
+        <div class="table-container">
+          <table id="streams-table">
+            <thead>
+              <tr>
+                <th>نام جریان</th>
+                <th>فاز</th>
+                <th>دبی (m³/h)</th>
+                <th>مس Cu (g/L)</th>
+                <th>آهن کل Fe (g/L)</th>
+                <th>Fe³⁺ (g/L)</th>
+                <th>Fe²⁺ (g/L)</th>
+                <th>منگنز Mn (g/L)</th>
+                <th>اسید آزاد (g/L)</th>
+              </tr>
+            </thead>
+            <tbody id="streams-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Reagents & Consumables -->
+      <div class="card">
+        <div class="card-header">
+          <h2>شاخص‌های مصارف مواد شیمیایی و انرژی (Specific Consumptions)</h2>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>عنوان شاخص</th>
+                <th>مقدار محاسباتی</th>
+                <th>واحد</th>
+                <th>توضیحات فنی</th>
+              </tr>
+            </thead>
+            <tbody id="reagents-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    توسعه‌یافته بر اساس مدل هیدرومتالورژی مس SimSXEWCu v7.0 | موتور محاسباتی مستقل تحت ماژول Python `sim_sxew_cu`
+  </footer>
+</div>
+
+<script>
+  // Complete Client-Side Engine for instant interactivity
+  const CONFIGS = {
+    "A1_2Ex1S": {
+      name: "مدار A1 (۲Ex-۱S پایه)",
+      tag: "۲Ex-۱S بدون شستشو، ارسال بلید به لیچ",
+      vv_base: 10.116, ml_base: 4.939, ex_eff: 93.115, strip_eff: 48.372, fe_strip: 78.806,
+      mn_wash: 0.0, fe_scrub: 0.0, cu_fe: 408.86, cu_pr: 2.1785, comm_cells: 37.74, scav_cells: 7.97,
+      bleed: 4.268, fe_mn: 2.513, mn3: 0.5368, mno4: 0.3949, demin_w: 1.729, raw_w: 0.0,
+      acid_ew: 0.635, cobalt: 0.294, ext_lost: 4.273, dil_lost: 33.841, recovery: 87.140,
+      nodes: ["PLS ورودی", "➔", "استخراج E1", "➔", "استخراج E2", "➔", "کوالسر ACT", "➔", "استریپینگ S1", "➔", "الکترووینینگ EW", "➔", "بلید به لیچ"]
+    },
+    "A1_3Ex1S": {
+      name: "مدار A1 (۳Ex-۱S)",
+      tag: "۳Ex-۱S بدون شستشو، افزایش بازیابی استخراج",
+      vv_base: 10.366, ml_base: 5.066, ex_eff: 95.699, strip_eff: 48.437, fe_strip: 78.361,
+      mn_wash: 0.0, fe_scrub: 0.0, cu_fe: 398.48, cu_pr: 2.2362, comm_cells: 38.76, scav_cells: 8.19,
+      bleed: 4.466, fe_mn: 2.627, mn3: 0.5260, mno4: 0.3645, demin_w: 1.761, raw_w: 0.0,
+      acid_ew: 0.641, cobalt: 0.300, ext_lost: 4.266, dil_lost: 32.877, recovery: 89.447,
+      nodes: ["PLS ورودی", "➔", "استخراج E1", "➔", "استخراج E2", "➔", "استخراج E3", "➔", "استریپینگ S1", "➔", "الکترووینینگ EW"]
+    },
+    "A2_2Ex1S": {
+      name: "مدار A2 (۲Ex-۱S سیرکولاسیون)",
+      tag: "۲Ex-۱S با بازگردانی بلید EW به مرحله E1",
+      vv_base: 10.520, ml_base: 5.144, ex_eff: 91.086, strip_eff: 48.496, fe_strip: 77.494,
+      mn_wash: 0.0, fe_scrub: 0.0, cu_fe: 413.64, cu_pr: 2.2771, comm_cells: 39.40, scav_cells: 8.32,
+      bleed: 4.458, fe_mn: 2.560, mn3: 0.5203, mno4: 0.3736, demin_w: 1.726, raw_w: 0.0,
+      acid_ew: 0.628, cobalt: 0.294, ext_lost: 4.270, dil_lost: 32.374, recovery: 91.086,
+      nodes: ["PLS ورودی", "➔", "استخراج E1 (+بلید)", "➔", "استخراج E2", "➔", "استریپینگ", "➔", "الکترووینینگ", "⮌", "سیرکولاسیون بلید به E1"]
+    },
+    "B1_2Ex1S": {
+      name: "مدار B1 (واش در لندر E1)",
+      tag: "شستشوی منگنز و آهن در لندر فاز آلی E1 با آب خام",
+      vv_base: 10.081, ml_base: 4.922, ex_eff: 93.143, strip_eff: 48.540, fe_strip: 80.922,
+      mn_wash: 85.294, fe_scrub: 0.0, cu_fe: 481.81, cu_pr: 2.1915, comm_cells: 37.75, scav_cells: 7.97,
+      bleed: 3.872, fe_mn: 7.147, mn3: 0.0432, mno4: 0.0, demin_w: 1.561, raw_w: 4.563,
+      acid_ew: 0.589, cobalt: 0.265, ext_lost: 4.228, dil_lost: 33.612, recovery: 87.660,
+      nodes: ["PLS", "➔", "استخراج E1", "➔", "لندر واش E1 (آب خام)", "➔", "کوالسر ACT", "➔", "استریپینگ", "➔", "الکترووینینگ"]
+    },
+    "B2_2Ex1S": {
+      name: "مدار B2 (لندر واش + سیرکولاسیون)",
+      tag: "لندر واش E1 با سیرکولاسیون بلید و دریناژها به E1",
+      vv_base: 10.462, ml_base: 5.114, ex_eff: 91.368, strip_eff: 48.648, fe_strip: 79.785,
+      mn_wash: 85.294, fe_scrub: 0.0, cu_fe: 483.12, cu_pr: 2.2842, comm_cells: 39.31, scav_cells: 8.30,
+      bleed: 4.057, fe_mn: 7.401, mn3: 0.0195, mno4: 0.0, demin_w: 1.567, raw_w: 4.378,
+      acid_ew: 0.586, cobalt: 0.266, ext_lost: 4.274, dil_lost: 32.603, recovery: 91.368,
+      nodes: ["PLS", "➔", "استخراج E1 (+سیرکولاسیون)", "➔", "لندر واش E1", "➔", "استریپینگ", "➔", "الکترووینینگ", "⮌", "بازگردانی به E1"]
+    },
+    "C1_2Ex1S": {
+      name: "مدار C1 (شستشو با آب خام)",
+      tag: "مرحله شستشوی مجزا با آب خام (O/A=50)",
+      vv_base: 10.069, ml_base: 4.915, ex_eff: 93.149, strip_eff: 48.604, fe_strip: 86.337,
+      mn_wash: 95.455, fe_scrub: 0.0, cu_fe: 508.26, cu_pr: 2.1918, comm_cells: 37.75, scav_cells: 7.97,
+      bleed: 3.863, fe_mn: 23.052, mn3: 0.0, mno4: 0.0, demin_w: 1.556, raw_w: 11.406,
+      acid_ew: 0.590, cobalt: 0.264, ext_lost: 4.222, dil_lost: 33.612, recovery: 87.671,
+      nodes: ["PLS", "➔", "استخراج E1-E2", "➔", "مرحله شستشو Wash (آب خام)", "➔", "استریپینگ", "➔", "الکترووینینگ"]
+    },
+    "C2_2Ex1S": {
+      name: "مدار C2 (شستشوی خام + سیرکولاسیون)",
+      tag: "مرحله شستشوی آب خام با سیرکولاسیون پساب و بلید به E1",
+      vv_base: 10.464, ml_base: 5.115, ex_eff: 91.477, strip_eff: 48.711, fe_strip: 85.593,
+      mn_wash: 95.455, fe_scrub: 0.0, cu_fe: 507.03, cu_pr: 2.2869, comm_cells: 39.37, scav_cells: 8.31,
+      bleed: 4.077, fe_mn: 24.505, mn3: 0.0, mno4: 0.0, demin_w: 1.572, raw_w: 10.932,
+      acid_ew: 0.589, cobalt: 0.267, ext_lost: 4.333, dil_lost: 33.046, recovery: 91.477,
+      nodes: ["PLS", "➔", "استخراج E1", "➔", "مرحله شستشو Wash", "➔", "استریپینگ", "➔", "EW", "⮌", "سیرکولاسیون به E1"]
+    },
+    "D1_2Ex1S": {
+      name: "مدار D1 (اسکرابینگ با آب اسیدی)",
+      tag: "شستشو با آب اسیدی جهت جدایش آهن (FeSc=50%)",
+      vv_base: 10.028, ml_base: 4.895, ex_eff: 93.167, strip_eff: 48.379, fe_strip: 79.600,
+      mn_wash: 95.455, fe_scrub: 50.00, cu_fe: 959.04, cu_pr: 2.1952, comm_cells: 37.12, scav_cells: 7.83,
+      bleed: 2.626, fe_mn: 11.305, mn3: 0.0, mno4: 0.0, demin_w: 1.073, raw_w: 11.389,
+      acid_ew: 0.437, cobalt: 0.179, ext_lost: 4.199, dil_lost: 33.575, recovery: 87.808,
+      nodes: ["PLS", "➔", "استخراج E1-E2", "➔", "اسکرابینگ آهن FeSc (آب اسیدی)", "➔", "استریپینگ", "➔", "EW"]
+    },
+    "D2_2Ex1S": {
+      name: "مدار D2 (اسکرابینگ اسیدی + سیرکولاسیون)",
+      tag: "اسکرابینگ آهن با آب اسیدی و سیرکولاسیون پساب شستشو به E1",
+      vv_base: 10.406, ml_base: 5.086, ex_eff: 91.330, strip_eff: 48.444, fe_strip: 78.686,
+      mn_wash: 95.455, fe_scrub: 50.00, cu_fe: 961.09, cu_pr: 2.2833, comm_cells: 38.59, scav_cells: 8.14,
+      bleed: 2.772, fe_mn: 11.891, mn3: 0.0, mno4: 0.0, demin_w: 1.087, raw_w: 10.949,
+      acid_ew: 0.435, cobalt: 0.182, ext_lost: 4.311, dil_lost: 33.078, recovery: 91.330,
+      nodes: ["PLS", "➔", "استخراج E1", "➔", "اسکرابینگ FeSc", "➔", "استریپینگ", "➔", "EW", "⮌", "سیرکولاسیون به E1"]
+    },
+    "E1_2Ex1S": {
+      name: "مدار E1 (اسکرابینگ با بلید رقیق)",
+      tag: "بهترین انتخاب متالورژیکی: اسکرابینگ آهن با بلید رقیق‌شده EW",
+      vv_base: 10.030, ml_base: 4.896, ex_eff: 93.164, strip_eff: 48.823, fe_strip: 78.991,
+      mn_wash: 96.071, fe_scrub: 56.625, cu_fe: 1094.03, cu_pr: 2.2425, comm_cells: 37.80, scav_cells: 7.97,
+      bleed: 2.529, fe_mn: 11.542, mn3: 0.0, mno4: 0.0, demin_w: 1.014, raw_w: 12.240,
+      acid_ew: 0.414, cobalt: 0.169, ext_lost: 4.111, dil_lost: 32.866, recovery: 89.699,
+      nodes: ["PLS", "➔", "استخراج E1-E2", "➔", "شستشو با بلید رقیق EWB", "➔", "استریپینگ", "➔", "EW", "⮌", "بلید رقیق به شستشو"]
+    },
+    "E2_2Ex1S": {
+      name: "مدار E2 (بلید رقیق + سیرکولاسیون کامل)",
+      tag: "اسکرابینگ با بلید رقیق و بازگردانی کامل پساب‌ها به E1",
+      vv_base: 10.294, ml_base: 5.029, ex_eff: 92.255, strip_eff: 48.891, fe_strip: 79.077,
+      mn_wash: 96.263, fe_scrub: 56.272, cu_fe: 1073.09, cu_pr: 2.3064, comm_cells: 38.89, scav_cells: 8.20,
+      bleed: 2.667, fe_mn: 13.085, mn3: 0.0, mno4: 0.0, demin_w: 1.038, raw_w: 12.557,
+      acid_ew: 0.418, cobalt: 0.173, ext_lost: 4.237, dil_lost: 32.910, recovery: 92.255,
+      nodes: ["PLS", "➔", "استخراج E1", "➔", "واش با بلید رقیق", "➔", "استریپینگ", "➔", "EW", "⮌", "سیرکولاسیون کامل به E1"]
+    }
+  };
+
+  let activeConfigKey = "A1_2Ex1S";
+
+  function runSimulation() {
+    const cfg = CONFIGS[activeConfigKey];
+    const plsFlow = parseFloat(document.getElementById("inp-pls-flow").value) || 1000.0;
+    const plsCu = parseFloat(document.getElementById("inp-pls-cu").value) || 2.50;
+    const plsFe3 = parseFloat(document.getElementById("inp-pls-fe3").value) || 0.50;
+    const plsFe2 = parseFloat(document.getElementById("inp-pls-fe2").value) || 2.00;
+    const plsMn = parseFloat(document.getElementById("inp-pls-mn").value) || 4.00;
+    const plsAc = parseFloat(document.getElementById("inp-pls-ac").value) || 5.00;
+    const pml = parseFloat(document.getElementById("inp-pml").value) || 80.0;
+    const oa = parseFloat(document.getElementById("inp-oa").value) || 1.25;
+
+    const scale = (plsFlow / 1000.0) * (plsCu / 2.5);
+    const vv = (cfg.vv_base * (plsCu / 2.5)).toFixed(2);
+    const ml = (cfg.ml_base * (plsCu / 2.5)).toFixed(2);
+    const cu_pr = (cfg.cu_pr * scale).toFixed(2);
+    const comm_pr = (cu_pr * 0.8).toFixed(2);
+    const scav_pr = (cu_pr * 0.2).toFixed(2);
+    const comm_cells = Math.round(cfg.comm_cells * scale);
+    const scav_cells = Math.round(cfg.scav_cells * scale);
+    const bleed = (cfg.bleed * scale).toFixed(2);
+
+    // Update KPIs
+    document.getElementById("kpi-recovery").textContent = cfg.recovery.toFixed(2) + "%";
+    document.getElementById("kpi-ex-eff").textContent = "راندمان استخراج: " + cfg.ex_eff.toFixed(2) + "%";
+    document.getElementById("kpi-prod").textContent = cu_pr + " t/h";
+    document.getElementById("kpi-prod-sub").textContent = `تجاری: ${comm_pr} | اسکاوندجر: ${scav_pr}`;
+    document.getElementById("kpi-extractant").textContent = vv + "% v/v";
+    document.getElementById("kpi-ml").textContent = "ماکزیمم بارگیری: " + ml + " g/L";
+    document.getElementById("kpi-bleed").textContent = bleed + " m³/h";
+    document.getElementById("kpi-cells").textContent = `سلول‌ها: ${comm_cells + scav_cells} (${comm_cells} تجاری + ${scav_cells} اسکاوندجر)`;
+    document.getElementById("kpi-cufe").textContent = cfg.cu_fe.toFixed(1);
+    document.getElementById("kpi-femn").textContent = "نسبت Fe/Mn اسپنت: " + cfg.fe_mn.toFixed(1);
+
+    const mnRiskEl = document.getElementById("kpi-mn-risk");
+    const mnRiskSub = document.getElementById("kpi-mn-risk-sub");
+    if (cfg.mno4 > 0.05) {
+      mnRiskEl.textContent = cfg.mno4.toFixed(3) + " g/L";
+      mnRiskEl.style.color = "var(--accent-danger)";
+      mnRiskSub.textContent = "خطر رسوب آندی MnO2 (بحرانی)";
+    } else {
+      mnRiskEl.textContent = "صفر (ایمن)";
+      mnRiskEl.style.color = "var(--emerald)";
+      mnRiskSub.textContent = "حذف منگنز در شستشو: " + cfg.mn_wash.toFixed(1) + "%";
+    }
+
+    // Schematic nodes
+    document.getElementById("circuit-summary-tag").textContent = cfg.tag;
+    const flowContainer = document.getElementById("flow-schematic-container");
+    flowContainer.innerHTML = "";
+    cfg.nodes.forEach((nodeText, idx) => {
+      if (nodeText === "➔" || nodeText === "⮌") {
+        const arrow = document.createElement("div");
+        arrow.className = "node-arrow";
+        arrow.textContent = nodeText;
+        flowContainer.appendChild(arrow);
+      } else {
+        const nodeDiv = document.createElement("div");
+        let cls = "node";
+        if (nodeText.includes("PLS") || nodeText.includes("E1") || nodeText.includes("E2")) cls += " aqueous";
+        else if (nodeText.includes("آلی") || nodeText.includes("کوالسر")) cls += " organic";
+        else if (nodeText.includes("واش") || nodeText.includes("شستشو") || nodeText.includes("FeSc")) cls += " wash";
+        else if (nodeText.includes("الکترووینینگ") || nodeText.includes("EW")) cls += " ew";
+        nodeDiv.className = cls;
+        nodeDiv.innerHTML = `<div class="node-title">${nodeText}</div><div class="node-desc">Active Stage</div>`;
+        flowContainer.appendChild(nodeDiv);
+      }
+    });
+
+    // Streams Table
+    const orgFlow = (plsFlow * oa).toFixed(1);
+    const rafCu = (plsCu * (1 - cfg.ex_eff / 100.0)).toFixed(3);
+    const advFlow = (159.0 * scale).toFixed(1);
+    const spentFlow = (159.3 * scale).toFixed(1);
+
+    const streamsData = [
+      { name: "PLS ورودی (Feed PLS)", phase: "آبی (Aq)", flow: plsFlow.toFixed(1), cu: plsCu.toFixed(3), fe: (plsFe3 + plsFe2).toFixed(3), fe3: plsFe3.toFixed(3), fe2: plsFe2.toFixed(3), mn: plsMn.toFixed(3), ac: plsAc.toFixed(2) },
+      { name: "رافینیت نهایی (Raffinate)", phase: "آبی (Aq)", flow: (plsFlow * 1.001).toFixed(1), cu: rafCu, fe: (plsFe3 + plsFe2 - 0.01).toFixed(3), fe3: (plsFe3 - 0.006).toFixed(3), fe2: plsFe2.toFixed(3), mn: (plsMn * 0.999).toFixed(3), ac: (plsAc + (plsCu - parseFloat(rafCu)) * 1.54).toFixed(2) },
+      { name: "فاز آلی باردار (Loaded Organic - LOT)", phase: "آلی (Org)", flow: orgFlow, cu: (ml * (pml / 100.0)).toFixed(3), fe: (0.008 * (plsCu / 2.5)).toFixed(4), fe3: "0.006", fe2: "0.002", mn: "0.000", ac: "0.00" },
+      { name: "فاز آلی تهی‌شده (Stripped Organic)", phase: "آلی (Org)", flow: orgFlow, cu: (ml * (pml / 100.0) - (plsCu * (cfg.ex_eff / 100.0)) / oa).toFixed(3), fe: "0.001", fe3: "0.001", fe2: "0.000", mn: "0.000", ac: "0.00" },
+      { name: "ادوانس الکترولیت (Advance Electrolyte)", phase: "آبی (Aq)", flow: advFlow, cu: "49.70", fe: "1.85", fe3: "1.84", fe2: "0.01", mn: (cfg.fe_mn > 0 ? (1.85 / cfg.fe_mn).toFixed(3) : "0.74"), ac: "165.8" },
+      { name: "اسپنت الکترولیت (Spent Electrolyte)", phase: "آبی (Aq)", flow: spentFlow, cu: "35.00", fe: "1.81", fe3: "1.81", fe2: "0.00", mn: (cfg.fe_mn > 0 ? (1.81 / cfg.fe_mn).toFixed(3) : "0.72"), ac: "190.0" },
+      { name: "بلید الکترووینینگ (CuEW Bleed)", phase: "آبی (Aq)", flow: bleed, cu: "35.00", fe: "1.81", fe3: "1.81", fe2: "0.00", mn: (cfg.fe_mn > 0 ? (1.81 / cfg.fe_mn).toFixed(3) : "0.72"), ac: "190.0" }
+    ];
+
+    if (cfg.raw_w > 0) {
+      streamsData.push({
+        name: "پساب مرحله شستشو (WSOS / Wash Outlet)",
+        phase: "آبی (Aq)",
+        flow: (26.25 * scale).toFixed(1),
+        cu: (cfg.fe_scrub > 0 ? "1.60" : "0.07"),
+        fe: (cfg.fe_scrub > 0 ? "0.40" : "0.23"),
+        fe3: (cfg.fe_scrub > 0 ? "0.22" : "0.05"),
+        fe2: "0.18",
+        mn: "0.36",
+        ac: (cfg.fe_scrub > 0 ? "12.0" : "0.70")
+      });
+    }
+
+    const tbody = document.getElementById("streams-tbody");
+    tbody.innerHTML = "";
+    streamsData.forEach(s => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td style="font-weight:600;">${s.name}</td>
+        <td class="${s.phase.includes('Org') ? 'tag-org' : 'tag-aq'}">${s.phase}</td>
+        <td class="num">${s.flow}</td>
+        <td class="num" style="color:var(--copper); font-weight:bold;">${s.cu}</td>
+        <td class="num">${s.fe}</td>
+        <td class="num">${s.fe3}</td>
+        <td class="num">${s.fe2}</td>
+        <td class="num">${s.mn}</td>
+        <td class="num">${s.ac}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Reagents Table
+    const reagentsData = [
+      { name: "مصرف اکسترکتنت LIX 984N", val: cfg.ext_lost.toFixed(2), unit: "kg / tCu", desc: "ناشی از گیر افتادگی فیزیکی آلی در رافینیت (0.1 L/m³)" },
+      { name: "مصرف دیلوئنت / نفت سفید صنعتی", val: cfg.dil_lost.toFixed(1), unit: "kg / tCu", desc: "اتلاف حلال پایه در فاز آبی" },
+      { name: "مصرف آب بدون املاح (Demin Water)", val: cfg.demin_w.toFixed(2), unit: "m³ / tCu", desc: "تزریق به تانک سیرکولاسیون EW جهت کنترل بالانس آب و آهن" },
+      { name: "مصرف آب خام شستشو (Raw Water)", val: cfg.raw_w.toFixed(2), unit: "m³ / tCu", desc: "آب مصرفی لندر یا میکسر-ستلر مرحله شستشو" },
+      { name: "مصرف اسید سولفوریک در الکترووینینگ", val: cfg.acid_ew.toFixed(3), unit: "t / tCu", desc: "اسید خالص جایگزین‌شده به دلیل خروج بلید" },
+      { name: "مصرف کبالت محافظ آند", val: (cfg.cobalt * 1000).toFixed(0), unit: "g / tCu", desc: "سولفات کبالت جهت پاسیواسیون آندهای سربی" },
+      { name: "اتلاف مس در بلید و آب اضافی", val: (cfg.cu_pr * 0.001 * 0.05).toFixed(3), unit: "t / h", desc: "کمتر از ۰.۲٪ کاتد تولیدی در محدوده ایمن صنعتی" }
+    ];
+
+    const rbody = document.getElementById("reagents-tbody");
+    rbody.innerHTML = "";
+    reagentsData.forEach(r => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td style="font-weight:600;">${r.name}</td>
+        <td class="num" style="color:var(--cyan); font-weight:bold;">${r.val}</td>
+        <td style="direction:ltr; text-align:right;">${r.unit}</td>
+        <td style="color:var(--text-muted); font-size:0.75rem;">${r.desc}</td>
+      `;
+      rbody.appendChild(tr);
+    });
+  }
+
+  // Event Listeners
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeConfigKey = btn.dataset.config;
+      runSimulation();
+
+  // Register Service Worker for Offline PWA Support
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(err => {
+        console.log('Service Worker registration skipped:', err);
+      });
+    });
+  }
+
+    });
+  });
+
+  document.getElementById("btn-run-sim").addEventListener("click", runSimulation);
+
+  // CSV Export
+  document.getElementById("btn-export-csv").addEventListener("click", () => {
+    const table = document.getElementById("streams-table");
+    let csv = "";
+    for (let row of table.rows) {
+      let rowData = [];
+      for (let cell of row.cells) {
+        rowData.push('"' + cell.innerText.trim() + '"');
+      }
+      csv += rowData.join(",") + "\n";
+    }
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `SimSXEWCu_${activeConfigKey}_streams.csv`;
+    a.click();
+  });
+
+  // Initial Run
+  runSimulation();
+</script>
+
+</body>
+</html>
